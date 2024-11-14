@@ -1,2 +1,4 @@
-.pdf
-.zip
+*.pdf
+*.zip
+.venv/
+*.pyc
