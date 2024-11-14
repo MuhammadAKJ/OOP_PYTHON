@@ -16,24 +16,26 @@ def move(direction: str, distance: int, delay: float = 1.0):
 
     delay is a float parameter to simulate time speed
     """
-    if direction not in ('x', 'y'):
-        raise ValueError("Direction must be 'x' or 'y'")
+    if direction not in ('x', 'y', 'z'):
+        raise ValueError("Direction must be 'x' or 'y' or 'z'")
     
     for step in range(1, distance + 1):
         for drone in Drone.all_drones:
-            x, y = drone.coordinates
+            x, y, z = drone.coordinates
             if direction == 'x':
-                drone.coordinates = (x + step, y)
+                drone.coordinates = (x + 1, y, z)
+            elif direction == 'y':
+                drone.coordinates = (x, y + 1, z)
             else:
-                drone.coordinates = (x, y + step)
+                drone.coordinates = (x, y, z + 1)
+        print("Updated drone coordinates:", [drone.coordinates for drone in Drone.all_drones])
         time.sleep(delay)
-    print("Updated drone coordinates:", [drone.coordinates for drone in Drone.all_drones])
-
+    
 def main():
     """Main function"""
-    formation_five(34, 24, 5)
+    formation_five(34, 24, 10, 5)
     
-    move('x', 20, delay=0.5)
+    move('z', 20, delay=1.5)
 
 
 if __name__ == "__main__":
