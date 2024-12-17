@@ -2,6 +2,8 @@
 import time
 from formation import formation_five
 from drone import Drone
+import matplotlib.pyplot as plt
+import numpy as np
 
 def move(direction: str, distance: int, delay: float = 1.0):
     """(function) move
@@ -28,14 +30,29 @@ def move(direction: str, distance: int, delay: float = 1.0):
                 drone.coordinates = (x, y + 1, z)
             else:
                 drone.coordinates = (x, y, z + 1)
+            # plot_formation(drone.coordinates)
         print("Updated drone coordinates:", [drone.coordinates for drone in Drone.all_drones])
         time.sleep(delay)
     
+
+def plot_formation(positions, target=None):
+    """Visualize UAV formation and target."""
+    target = [234, 545, 70]
+    positions = np.array(positions)
+    plt.plot(positions[0], positions[1], 'bo-', label='UAV Path')
+    plt.scatter(target[0], target[1], color='red', label='Target')
+    plt.legend()
+    plt.show()
+
+
 def main():
     """Main function"""
     formation_five(34, 24, 10, 5)
     
     move('z', 20, delay=1.5)
+    positions = []
+    positions.append(drone.coordinate for drone in Drone.all_drones) 
+    print(positions)
 
 
 if __name__ == "__main__":

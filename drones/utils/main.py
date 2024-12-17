@@ -83,12 +83,11 @@ def plot_formation(positions, target):
 
 
 
-UAV_positions = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]])
+UAV_positions = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 1, 1], [0, 1, 0], [0, 1, 1]])
 target = np.array([5, 5, 5])
 
-
 optimized_positions = flux_minimization(UAV_positions, target)
-
 pid = PIDController(1, 0.1, 0.05)
 path = simulate_uav_motion(optimized_positions, pid)
+pid.control(target, )
 plot_formation(path, target)
