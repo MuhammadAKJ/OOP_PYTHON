@@ -6,12 +6,12 @@ def create_mp3_files(chapter_no):
 
 
 def play(chapter: str, verse=0):
-    surah_list = list(chapters)
-    verses = chapters[chapter]
+    chapter_no, verses = chapters[chapter]
     for ayat in range(verse-1, verses):
         print(ayat+1)
-    print(surah_list)
+    print(chapter_no)
+    
 
     
 
-play(5, 5)
+play('Hud')
