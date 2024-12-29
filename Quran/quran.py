@@ -10,23 +10,10 @@ def create_mp3_files(surahs):
                 file.write(f'{chapter_no_padded[-3:]}{ayat_padded[-3:]}\n')
 
 
-def play(chapter: str, surat_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=0):
-    queue = []
-    chapter_no, no_of_ayat = chapters[chapter]
-    assert start_ayat <= no_of_ayat, 'Out of range'
-    assert stop_ayat >= start_ayat, 'Range error'
-    
-    for i in range(start_ayat, stop_ayat):
-        chapter_no_padded = f'00{chapter_no}'
-        ayat_padded = f'00{i}'
-        queue.append(f'{chapter_no_padded[-3:]}{ayat_padded[-3:]}')
-
-    
-    for i in range(surat_repeat):
-        for file in queue:
-            play_current(file)
+def play(chapter: str, group_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=0):
     '''
     chapter >> provide chapter name to be played
+    group_repeat >> number of times to repeat group play
     surat_repeat >> whether to repeat surah or not.
         options:
             0 > play once
@@ -36,12 +23,37 @@ def play(chapter: str, surat_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=0)
     start_ayat >> default is 1 but can be changed (1-No. of ayat in surah)
     stop_ayat >> default is last ayat of the surah but can change (1-No. ayat in surah)
     '''
+    queue = []
+    chapter_no, no_of_ayat = chapters[chapter]
+    assert start_ayat <= no_of_ayat, 'Out of range'
+    assert stop_ayat >= start_ayat, 'Range error'
     
+    # Create a queue list
+    for i in range(start_ayat, stop_ayat + 1):
+        chapter_no_padded = f'00{chapter_no}'
+        ayat_padded = f'00{i}'
+        queue.append(f'{chapter_no_padded[-3:]}{ayat_padded[-3:]}')
 
+    
+    for i in range(group_repeat): #loop through group repeat + 1 to make it human readable
+        for file in queue: #loop through file
+            if ayat_repeat == 0:
+                play_current(file)
+            elif ayat_repeat > 0:
+                for j in range(ayat_repeat):
+                    play_current(file)
+            else:
+                raise 'invalid range'
 
+def display_ayat(file_name):
+    with open('quran-text.txt', 'r', encoding='UTF-8') as file:
+        for line in file.readlines():
+            if line.startswith(file_name):
+                print(line[6:]).
 
 def play_current(file_name):
     print(f'playing {file_name}...')
+    display_ayat(file_name)
     
 
 
@@ -50,4 +62,4 @@ def play_current(file_name):
 
 # create_mp3_files(chapters)
 
-play('Hud', 2, 0, 1, 10)
+play(chapter='An-Nas', group_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=6)
