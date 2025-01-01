@@ -4,7 +4,7 @@ from pydub import AudioSegment
 from pydub.playback import play as pyplay
 
 file_path = os.path.dirname(__file__)
-audio_base = os.path.join(file_path, '/audio/minshawi')
+audio_base = file_path + '/audio/minshawi'
 
 def create_mp3_files(surahs):
     with open('quran.txt', 'a', encoding='UTF-8') as file:
@@ -62,6 +62,7 @@ def play_ayat(filename):
     path = os.path.join(audio_base, mp3_filename)
     audio = AudioSegment.from_file(path)
     pyplay(audio)
+    
 
 def play_current(file_name):
     print(f'playing {file_name}...')
