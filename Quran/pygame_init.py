@@ -2,6 +2,8 @@ import pygame
 import sys
 import os
 from chapters import chapters
+import arabic_reshaper
+from bidi.algorithm import get_display
 
 pygame.init()
 
@@ -11,6 +13,7 @@ BLACK = (0, 0, 0)
 FONT_SIZE = 36
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Quran App")
 file_path = os.path.dirname(__file__)
 audio_base = file_path + '/audio/minshawi'
 font = pygame.font.SysFont("Arial", FONT_SIZE)
@@ -57,7 +60,9 @@ def display_ayat(file_name):
         for line in file.readlines():
             if line.startswith(file_name):
                 text = line[6:]
-    text_surface = font.render(text, True, BLACK)
+    reshaped_text = arabic_reshaper.reshape(text)
+    bidi_text = get_display(reshaped_text)
+    text_surface = font.render(bidi_text, True, BLACK)
     #fill screen with white
     screen.fill(WHITE)
 
@@ -82,12 +87,10 @@ def play_current(file_name):
     play_ayat(file_name)
 
 
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-
-    play(chapter='An-Nas', group_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=2)
     
+    play(chapter='An-Nas', group_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=2)
