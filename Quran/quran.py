@@ -2,6 +2,9 @@ from chapters import chapters
 import os
 from pydub import AudioSegment
 from pydub.playback import play as pyplay
+import time
+import pygame
+
 
 file_path = os.path.dirname(__file__)
 audio_base = file_path + '/audio/minshawi'
@@ -62,7 +65,20 @@ def play_ayat(filename):
     path = os.path.join(audio_base, mp3_filename)
     audio = AudioSegment.from_file(path)
     pyplay(audio)
-    
+    time.sleep(len(audio) / 1000) # time to sleep is lenght of audio in milliseconds
+'''
+def play_ayat(filename):
+    mp3_filename = filename + '.mp3'
+    path = os.path.join(audio_base, mp3_filename)
+    pygame.mixer.init()
+    pygame.mixer.music.load(path)
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        pass
+'''
+
+
+
 
 def play_current(file_name):
     print(f'playing {file_name}...')

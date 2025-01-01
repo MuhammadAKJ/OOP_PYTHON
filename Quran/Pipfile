@@ -8,6 +8,8 @@ pygame = "*"
 kivy = "*"
 pydub = "*"
 simpleaudio = "*"
+arabic-reshaper = "*"
+python-bidi = "*"
 
 [dev-packages]
 
