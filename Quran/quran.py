@@ -1,4 +1,10 @@
 from chapters import chapters
+import os
+from pydub import AudioSegment
+from pydub.playback import play as pyplay
+
+file_path = os.path.dirname(__file__)
+audio_base = os.path.join(file_path, '/audio/minshawi')
 
 def create_mp3_files(surahs):
     with open('quran.txt', 'a', encoding='UTF-8') as file:
@@ -40,7 +46,7 @@ def play(chapter: str, group_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=0)
             if ayat_repeat == 0:
                 play_current(file)
             elif ayat_repeat > 0:
-                for j in range(ayat_repeat):
+                for _ in range(ayat_repeat):
                     play_current(file)
             else:
                 raise 'invalid range'
@@ -49,17 +55,24 @@ def display_ayat(file_name):
     with open('quran-text.txt', 'r', encoding='UTF-8') as file:
         for line in file.readlines():
             if line.startswith(file_name):
-                print(line[6:]).
+                print(line[6:])
+
+def play_ayat(filename):
+    mp3_filename = filename + '.mp3'
+    path = os.path.join(audio_base, mp3_filename)
+    audio = AudioSegment.from_file(path)
+    pyplay(audio)
 
 def play_current(file_name):
     print(f'playing {file_name}...')
     display_ayat(file_name)
-    
+    play_ayat(file_name)
 
 
 
 # play('Hud')
 
 # create_mp3_files(chapters)
-
 play(chapter='An-Nas', group_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=6)
+
+# print(os.getcwd())
