@@ -85,7 +85,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    play(chapter='An-Nas', group_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=6)
+    play(chapter='Nooh', group_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=28)
     running = False
 
 pygame.quit()
