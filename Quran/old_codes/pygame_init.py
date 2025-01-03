@@ -40,12 +40,10 @@ def play(chapter: str, group_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=0)
     
     # Create a queue list
     for i in range(start_ayat, stop_ayat + 1):
-        chapter_no_padded = f'00{chapter_no}'
-        ayat_padded = f'00{i}'
-        queue.append(f'{chapter_no_padded[-3:]}{ayat_padded[-3:]}')
+        queue.append(f'{chapter_no:3}{i:3}')
 
     
-    for i in range(group_repeat): #loop through group repeat + 1 to make it human readable
+    for _ in range(group_repeat): #loop through group repeat + 1 to make it human readable
         for file in queue: #loop through file
             if ayat_repeat == 0:
                 play_current(file)
@@ -56,10 +54,13 @@ def play(chapter: str, group_repeat=1, ayat_repeat=0, start_ayat=1, stop_ayat=0)
                 raise 'invalid range'
 
 def display_ayat(file_name):
-    with open('quran-text.txt', 'r', encoding='UTF-8') as file:
-        for line in file.readlines():
-            if line.startswith(file_name):
-                text = line[6:]
+    try:
+        with open('quran-text.txt', 'r', encoding='UTF-8') as file:
+            for line in file.readlines():
+                if line.startswith(file_name):
+                    text = line[6:].strip()
+    except:
+        raise FileNotFoundError
     reshaped_text = arabic_reshaper.reshape(text)
     bidi_text = get_display(reshaped_text)
     text_surface = font.render(bidi_text, True, BLACK)

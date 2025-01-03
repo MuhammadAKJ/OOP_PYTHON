@@ -11,7 +11,7 @@ BLACK = (0, 0, 0)
 FONT_SIZE = 36
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Text Wrapping Example")
+pygame.display.set_caption("Text Wrapping Sample Code")
 font = pygame.font.Font('/home/shadow-walker/Desktop/Codes/OOP_PYTHON/Quran/fonts/Amiri-Bold.ttf', FONT_SIZE)  # None uses the default font
 
 def wrap_text(text, font, max_width):
