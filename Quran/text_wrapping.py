@@ -21,17 +21,23 @@ def wrap_text(text, font, max_width):
     words = text.split(' ')
     lines = []
     current_line = ""
-
-    for word in words:
-        test_line = f"{current_line} {word}".strip()
-        if font.size(test_line)[0] <= max_width:
-            current_line = test_line
-        else:
+    
+    with open('word_wrapping_log.txt', 'w', encoding='UTF-8') as logfile:
+        logfile.write(f'words: {words}\n')
+        for word in words:
+            logfile.write(f'***word: {word}\n')
+            test_line = f"{current_line} {word}".strip()
+            logfile.write(f'****text_line: {test_line}\ncurrent: {current_line}\n')
+            if font.size(test_line)[0] <= max_width:
+                current_line = test_line
+                logfile.write(f'if line -> current: {current_line}\n')
+            else:
+                lines.append(current_line)
+                current_line = word
+                logfile.write(f'else line -> current: {current_line}\n')
+        if current_line:
             lines.append(current_line)
-            current_line = word
-    if current_line:
-        lines.append(current_line)
-    return lines
+        return lines
 
 def render_wrapped_text(text, font, color, x, y, max_width, line_spacing=5):
     """
@@ -40,13 +46,16 @@ def render_wrapped_text(text, font, color, x, y, max_width, line_spacing=5):
     reshaped_text = arabic_reshaper.reshape(text)  # Reshape for Arabic
     bidi_text = get_display(reshaped_text)        # Reorder for RTL
 
+    logfile = open('word_wrapping_log.txt', 'a', encoding='UTF-8')
     lines = wrap_text(bidi_text, font, max_width)
     y_offset = 0
 
     for line in lines:
+        logfile.write(f'\nfor loop -> line: {line}\n')
         text_surface = font.render(line, True, color)
         screen.blit(text_surface, (x, y + y_offset))
         y_offset += text_surface.get_height() + line_spacing
+    logfile.close()
 
 # Example text
 example_text = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ. قُلْ هُوَ اللَّهُ أَحَدٌ. اللَّهُ الصَّمَدُ."
