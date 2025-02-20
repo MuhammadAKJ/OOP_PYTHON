@@ -30,21 +30,16 @@ def wrap_text(text, font, max_width):
     lines = []
     current_line = ""
     words_inverted = invert_list(words)
-    with open('word_wrapping_log.txt', 'w', encoding='UTF-8') as logfile:
-        for word in words:
-            # logfile.write(f'***word: {word}\n')
-            test_line = f"{current_line} {word}".strip()
-            # logfile.write(f'****text_line: {test_line}\ncurrent: {current_line}\n')
-            if font.size(test_line)[0] <= max_width:
-                current_line = test_line
-                logfile.write(f'if line -> current: {current_line}\n')
-            else:
-                lines.append(current_line)
-                current_line = word
-                logfile.write(f'else line -> current: {current_line}\n')
-        if current_line:
+    for word in words:
+        test_line = f"{current_line} {word}".strip()
+        if font.size(test_line)[0] <= max_width:
+            current_line = test_line
+        else:
             lines.append(current_line)
-        return lines
+            current_line = word
+    if current_line:
+        lines.append(current_line)
+    return lines
 
 
 def render_wrapped_text(text, font, color, x, y, max_width, line_spacing=5):
